@@ -1,13 +1,13 @@
 import os
 import telebot
 
-TOKEN = os.getenv("BOT_TOKEN")
+bot = telebot.TeleBot(os.environ["BOT_TOKEN"])
 
-bot = telebot.TeleBot(TOKEN)
+def handler(request):
+    if request.method == "POST":
+        bot.process_new_updates(
+            [telebot.types.Update.de_json(request.body.decode("utf-8"))]
+        )
+        return "OK"
 
-@bot.message_handler(func=lambda message: True)
-def responder(message):
-    bot.reply_to(message, "¡Hola! 👋 Tu bot ZonaGris ya está funcionando.")
-
-print("Bot iniciado...")
-bot.infinity_polling()
+    return "Bot ZonaGris funcionando 👋"
